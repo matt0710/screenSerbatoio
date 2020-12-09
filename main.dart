@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:screen1/Measurement_chart.dart';
 import 'package:screen1/Tank.dart';
 import 'package:screen1/Sensor.dart';
+import 'package:screen1/setPartOne.dart';
+import 'package:screen1/setPartTwo.dart';
+import 'package:screen1/setPartThree.dart';
 
 import 'Measurement.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+
 
 void main() {
   runApp(MyApp());
@@ -24,7 +28,17 @@ class MyPage extends StatelessWidget{
       body: MyListView()._myListViewWithCustomIconAndCard(context),
     );
   }
+}
 
+class MyApp extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'assets',
+      theme: new ThemeData(scaffoldBackgroundColor: const Color(0xFFEFEFEF)),
+      home: MyPage(),
+    );
+  }
 }
 
 class MyListView extends StatelessWidget {
@@ -57,39 +71,58 @@ class MyListView extends StatelessWidget {
       Measurement(createdat: 22.00, data: 11, barColor: charts.ColorUtil.fromDartColor(Color.fromARGB(255, 160, 25, 29))),
       Measurement(createdat: 23.00, data: 10, barColor: charts.ColorUtil.fromDartColor(Color.fromARGB(255, 160, 25, 29)))];
 
-    final tank = new Tank(label: 'TANK 1', code: 'A', flags: 1, capacity: 15.0, measurement: data, setpoint: 12.0,type: 'VINIFICATORE');
-
+    //final tank = new Tank(label: 'TANK 1', code: 'A', flags: 1, capacity: 15.0, measurement: data, setpoint: 12.0,type: 'VINIFICATORE');
+    final tank = new Tank(label: 'TANK 1', code: 'A', flags: 1, capacity: 15.0, measureUnit: "litri", measurement: data, setpoint: 12.0,type: 'VINIFICATORE');
     final List<Sensor> sensor_list = [
       Sensor(name: "sensor1", model: "aaa4", unit: "Celsius", measurement: data),
     ];
 
     return ListView(
       children: <Widget>[
-
-        Row(
-          children: <Widget>[
-              Container(
-                width: 20,
-              ),
-              Container(
-                child: Text(
-                  "\nGrafico andamento temperatura delle ultime 24h",
-                  style: TextStyle(
-                    //fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                    //color: Color.fromARGB(255, 160, 25, 29)
-                  ),
-                ),
-
-              ),
-          ]
-        ),
+        set_part_one(text: "Grafico andamento temperatura delle ultime 24h", fontStyle: FontStyle.italic, fontSize: 18, width: 10).part1(BuildContext),
 
         MeasurementChart(data: data, tank: tank),
 
+        Column(
+            children: <Widget>[
+              Container(
+                height: 30,
+              ),
+              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Codice serbatoio: ", text2: tank.code, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+              Container(
+                  height: 5
+              ),
+
+              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Tipo: ", text2: tank.type, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+              Container(
+                  height: 5
+              ),
+
+              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Sensore: ", text2: sensor_list[0].name, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+              Container(
+                  height: 5
+              ),
+
+              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Capacità: ", text2: tank.capacity.toString() + " " + tank.measureUnit, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+            ]
+        ),
+
         Container(
-            height: 20 //spazia il measurement chart e l'immagine
+            height: 20,
+            decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                      width: 1.5, color: Color.fromARGB(255, 160, 25, 29)),
+                )
+            )
+        ),
+
+        Container(
+          height: 20,
         ),
 
         Row(
@@ -108,62 +141,7 @@ class MyListView extends StatelessWidget {
             Container(
               width: 20,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Ultima rilevazione: ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    data[23].data.toString() + " °" + sensor_list[0].unit,
-                    style: TextStyle(
-                      //fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 25,
-                    ),
-                  ),
-                ),
-
-                Container(
-                    height: 20
-                ),
-
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Setpoint: ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    tank.setpoint.toString() + " °" + sensor_list[0].unit,
-                    style: TextStyle(
-                      //fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 25,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            set_part_two(fontStyle: FontStyle.italic, fontSize1: 18, fontSize2: 25, measurementString: data[23].data.toString(), sensorUnit: sensor_list[0].unit.toString(), setpoint: tank.setpoint.toString()).part2(BuildContext),
           ],
         ),
 
@@ -176,154 +154,11 @@ class MyListView extends StatelessWidget {
                 )
             )
         ),
-        Column(
-          children: <Widget>[
-            Container(
-              height: 30,
-            ),
-            Row(
-                children : <Widget> [
-                  Container(
-                    width: 20.0,
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "- Codice tank: ",
-                      style: TextStyle(
-                        //fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20,
-                          ),
-                        ) ,
-                      ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      tank.code,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20,
-                      ),
-                    ) ,
-                  ),
-                   ]
-                  ),
 
-                  Container(
-                      height: 5
-                  ),
 
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: 20.0,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "- Tipo: ",
-                          style: TextStyle(
-                            //fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                          ),
-                        ) ,
-                      ),
-
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          tank.type,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                          ),
-                        ) ,
-                      ),
-
-                    ]
-                  ),
-
-                  Container(
-                      height: 5
-                  ),
-
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: 20.0,
-                      ),
-                      Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "- Sensore: ",
-                            style: TextStyle(
-                              //fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 20,
-                            ),
-                          ) ,
-                        ),
-
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          sensor_list[0].name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                          ),
-                        ) ,
-                      ),
-
-                    ]
-                  ),
-
-                  Container(
-                    height: 5
-                  ),
-
-                  Row(
-                  children: <Widget>[
-                      Container(
-                        width: 20.0,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "- Capacità: ",
-                          style: TextStyle(
-                            //fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                          ),
-                        ) ,
-                      ),
-
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        tank.capacity.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                        ),
-                      ) ,
-                    ),
-
-                    ]
-                  )
-
-                ]
-            ),
 
         Container(
-          height: 20
+            height: 20
         ),
 
 
@@ -333,7 +168,7 @@ class MyListView extends StatelessWidget {
           child: Card(//definisco la forma
             elevation: 3,
             shape: StadiumBorder(
-                //dimensions: EdgeInsets.all(10),
+              //dimensions: EdgeInsets.all(10),
                 side: BorderSide(
                   color: Color.fromARGB(255, 160, 25, 29),
                   width: 1.0,
@@ -350,13 +185,13 @@ class MyListView extends StatelessWidget {
               //di Leo
               child: ListTile(
                 title: Text(
-                    "Altre misure",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                    ),
+                  "Altre misure",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20,
+                  ),
 
                 ),
               ),
@@ -364,24 +199,12 @@ class MyListView extends StatelessWidget {
           ),
         )
 
-          ],
-        //),
+      ],
+      //),
       //],
     );
   }
 
   Widget build(BuildContext context) => Container();
 
-}
-
-
-class MyApp extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'assets',
-      theme: new ThemeData(scaffoldBackgroundColor: const Color(0xFFEFEFEF)),
-      home: MyPage(),
-    );
-  }
 }

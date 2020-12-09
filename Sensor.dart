@@ -5,7 +5,7 @@ class Sensor {
   final String name;
   final String model;
   final String unit;
-  final Measurement measurement;
+  final List<Measurement> measurement;
 
   Sensor({
     @required this.name,
