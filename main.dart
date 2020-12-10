@@ -5,9 +5,13 @@ import 'package:screen1/Sensor.dart';
 import 'package:screen1/setPartOne.dart';
 import 'package:screen1/setPartTwo.dart';
 import 'package:screen1/setPartThree.dart';
+import 'package:screen1/createScreenOne.dart';
+
 
 import 'Measurement.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+const _PATH = 'images';
+const _pic1 = '$_PATH/cantina.jpg';
 
 
 void main() {
@@ -79,125 +83,101 @@ class MyListView extends StatelessWidget {
 
     return ListView(
       children: <Widget>[
-        set_part_one(text: "Grafico andamento temperatura delle ultime 24h", fontStyle: FontStyle.italic, fontSize: 18, width: 10).part1(BuildContext),
+          set_part_one(text: "Grafico andamento temperatura delle ultime 24h", fontStyle: FontStyle.italic, fontSize: 18, width: 10).part1(BuildContext),
 
-        MeasurementChart(data: data, tank: tank),
+          MeasurementChart(data: data, tank: tank),
 
-        Column(
+          Column(
+              children: <Widget>[
+                Container(
+                  height: 30,
+                ),
+                set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Codice serbatoio: ", text2: tank.code, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+                Container(
+                    height: 5
+                ),
+
+                set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Tipo: ", text2: tank.type, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+                Container(
+                    height: 5
+                ),
+
+                set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Sensore: ", text2: sensor_list[0].name, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+                Container(
+                    height: 5
+                ),
+
+                set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Capacità: ", text2: tank.capacity.toString() + " " + tank.measureUnit, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
+
+              ]
+          ),
+
+          Container(
+              height: 20,
+              decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.5, color: Color.fromARGB(255, 160, 25, 29)),
+                  )
+              )
+          ),
+
+          Container(
+            height: 20,
+          ),
+
+          Row(
             children: <Widget>[
               Container(
-                height: 30,
+                width: 20, //spazia l'immagine da sinistra in modo da non tenerla attaccata allo schermo
               ),
-              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Codice serbatoio: ", text2: tank.code, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
-
               Container(
-                  height: 5
-              ),
-
-              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Tipo: ", text2: tank.type, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
-
-              Container(
-                  height: 5
-              ),
-
-              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Sensore: ", text2: sensor_list[0].name, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
-
-              Container(
-                  height: 5
-              ),
-
-              set_part_three(width: 20, alignment: Alignment.topLeft, text1: "- Capacità: ", text2: tank.capacity.toString() + " " + tank.measureUnit, fontStyle: FontStyle.italic, fontSize1: 20, fontSize2: 20).part3(BuildContext),
-
-            ]
-        ),
-
-        Container(
-            height: 20,
-            decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                      width: 1.5, color: Color.fromARGB(255, 160, 25, 29)),
-                )
-            )
-        ),
-
-        Container(
-          height: 20,
-        ),
-
-        Row(
-          children: <Widget>[
-            Container(
-              width: 20, //spazia l'immagine da sinistra in modo da non tenerla attaccata allo schermo
-            ),
-            Container(
-              child: Stack(
-                children: <Widget>[
-                  Image.asset('images/serbatoio.jpg'),
-                ],
-              ),
-              width: 110,
-            ),
-            Container(
-              width: 20,
-            ),
-            set_part_two(fontStyle: FontStyle.italic, fontSize1: 18, fontSize2: 25, measurementString: data[23].data.toString(), sensorUnit: sensor_list[0].unit.toString(), setpoint: tank.setpoint.toString()).part2(BuildContext),
-          ],
-        ),
-
-        Container(
-            height: 20,
-            decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                      width: 1.5, color: Color.fromARGB(255, 160, 25, 29)),
-                )
-            )
-        ),
-
-
-
-        Container(
-            height: 20
-        ),
-
-
-        Padding(
-
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Card(//definisco la forma
-            elevation: 3,
-            shape: StadiumBorder(
-              //dimensions: EdgeInsets.all(10),
-                side: BorderSide(
-                  color: Color.fromARGB(255, 160, 25, 29),
-                  width: 1.0,
-                )
-            ),
-            child: InkWell(
-              customBorder: StadiumBorder(
-                  side: BorderSide(
-                    color: Color.fromARGB(255, 160, 25, 29),
-                    width: 1.0,
-                  )
-              ),
-              onTap: () => print("Ciao"),// definisco l'evento che accade alla pressione: realisticamente dovrà reindirizzarmi allo screen
-              //di Leo
-              child: ListTile(
-                title: Text(
-                  "Altre misure",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20,
-                  ),
-
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset('images/serbatoio.jpg'),
+                  ],
                 ),
+                width: 110,
               ),
-            ),
+              Container(
+                width: 20,
+              ),
+              set_part_two(fontStyle: FontStyle.italic, fontSize1: 18, fontSize2: 25, measurementString: data[23].data.toString(), sensorUnit: sensor_list[0].unit.toString(), setpoint: tank.setpoint.toString()).part2(BuildContext),
+            ],
           ),
-        )
+
+          Container(
+              height: 20,
+              decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.5, color: Color.fromARGB(255, 160, 25, 29)),
+                  )
+              )
+          ),
+
+
+
+          Container(
+              height: 20
+          ),
+
+        createScreenOne(
+          color: Color.fromARGB(255, 160, 25, 29),
+          navigate: null,
+          imageURL: null,
+          title: Text("Altre misure", textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontSize: 20,
+            ),
+          ), subtitle: Text(""),
+        ).screenOne(BuildContext),
+
 
       ],
       //),
