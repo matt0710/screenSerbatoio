@@ -2,14 +2,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const _PATH = 'images';
-const _pic1 = '$_PATH/cantina.jpg';
+const PATH = 'images';
+const pic1 = '$PATH/cantina.jpg';
 
 class createScreenOne{
   final double elevation;
   final Color color;
   final double width;
-  final Navigator navigate;
+  final VoidCallback navigate;
   final double containerWidth;
   final double containerHeight;
   final BoxShape shape;
@@ -30,98 +30,9 @@ class createScreenOne{
     @required this.subtitle,
 });
 
+
   Widget screenOne(BuildContext){
-    if(this.imageURL !=null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Card( //definisco la forma
-          elevation: this.elevation,
-          shape: StadiumBorder(
-              side: BorderSide(
-                color: this.color,
-                width: this.width,
-              )
-          ),
-          child: InkWell( //definisco la forma dell'ombra che si genera alla pressione
-            customBorder: StadiumBorder(
-                side: BorderSide(
-                  color: this.color,
-                  width: this.width,
-                )
-            ),
-            onTap: () => this.navigate,
-            // definisco l'evento che accade alla pressione: realisticamente dovrà reindirizzarmi allo screen
-            //di Leo
-            child: ListTile(
-              leading: Container(
-                height: this.containerHeight,
-                width: this.containerWidth,
-                decoration: BoxDecoration(
-                    shape: this.shape,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: this.imageURL.image,
-                    )
-                ),
-              ),
-              //Icon(Icons.access_alarm, color: Colors.orange[800], size: 20),//questo verrà sositutito dll'asset passato
-              //Image.asset(_pic1),
-              //dalla chiamata al server
-              title: this.title,
-              // anche questo
-              //ovviamente la chiamata riempie sempre il vettore wineries, quindi si prendono i dati da li
-              subtitle: this.subtitle,
-            ),
-          ),
-        ),
-      );
-    }
-    else if(this.imageURL == Image.asset("")){
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Card( //definisco la forma
-          elevation: this.elevation,
-          shape: StadiumBorder(
-              side: BorderSide(
-                color: this.color,
-                width: this.width,
-              )
-          ),
-          child: InkWell( //definisco la forma dell'ombra che si genera alla pressione
-            customBorder: StadiumBorder(
-                side: BorderSide(
-                  color: this.color,
-                  width: this.width,
-                )
-            ),
-            onTap: () => this.navigate,
-            // definisco l'evento che accade alla pressione: realisticamente dovrà reindirizzarmi allo screen
-            //di Leo
-            child: ListTile(
-              leading: Container(
-                height: this.containerHeight,
-                width: this.containerWidth,
-                decoration: BoxDecoration(
-                    shape: this.shape,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: Image.asset(_pic1).image,
-                    )
-                ),
-              ),
-              //Icon(Icons.access_alarm, color: Colors.orange[800], size: 20),//questo verrà sositutito dll'asset passato
-              //Image.asset(_pic1),
-              //dalla chiamata al server
-              title: this.title,
-              // anche questo
-              //ovviamente la chiamata riempie sempre il vettore wineries, quindi si prendono i dati da li
-              subtitle: this.subtitle,
-            ),
-          ),
-        ),
-      );
-    }
-    else{
+    if(this.imageURL ==null) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Card(//definisco la forma
@@ -145,12 +56,54 @@ class createScreenOne{
             child: ListTile(
               title: this.title,
 
-              ),
             ),
           ),
-        );
+        ),
+      );
     }
-
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Card( //definisco la forma
+        elevation: this.elevation,
+        shape: StadiumBorder(
+            side: BorderSide(
+              color: this.color,
+              width: this.width,
+            )
+        ),
+        child: InkWell( //definisco la forma dell'ombra che si genera alla pressione
+          customBorder: StadiumBorder(
+              side: BorderSide(
+                color: this.color,
+                width: this.width,
+              )
+          ),
+          onTap: () => this.navigate,
+          // definisco l'evento che accade alla pressione: realisticamente dovrà reindirizzarmi allo screen
+          //di Leo
+          child: ListTile(
+            leading: Container(
+              height: this.containerHeight,
+              width: this.containerWidth,
+              decoration: BoxDecoration(
+                  shape: this.shape,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: this.imageURL == Image.asset("") ? Image.asset(pic1).image : this.imageURL.image,
+                  )
+              ),
+            ),
+            //Icon(Icons.access_alarm, color: Colors.orange[800], size: 20),//questo verrà sositutito dll'asset passato
+            //Image.asset(_pic1),
+            //dalla chiamata al server
+            title: this.title,
+            // anche questo
+            //ovviamente la chiamata riempie sempre il vettore wineries, quindi si prendono i dati da li
+            subtitle: this.subtitle,
+          ),
+        ),
+      ),
+    );
   }
 
 
